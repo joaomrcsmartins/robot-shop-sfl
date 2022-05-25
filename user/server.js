@@ -104,6 +104,7 @@ app.get('/check/:id', (req, res) => {
 app.get('/users', (req, res) => {
     if(mongoConnected) {
         usersCollection.find().toArray().then((users) => {
+            // res.json(null);
             res.json(users);
         }).catch((e) => {
             req.log.error('ERROR', e);
@@ -126,6 +127,7 @@ app.post('/login', (req, res) => {
         }).then((user) => {
             req.log.info('user', user);
             if(user) {
+                // if(user.name == req.body.password) {
                 if(user.password == req.body.password) {
                     res.json(user);
                 } else {
@@ -152,6 +154,7 @@ app.post('/register', (req, res) => {
         res.status(400).send('insufficient data');
     } else if(mongoConnected) {
         // check if name already exists
+        // usersCollection.findOne({name: req.body.email}).then((user) => {
         usersCollection.findOne({name: req.body.name}).then((user) => {
             if(user) {
                 req.log.warn('user already exists');
@@ -197,6 +200,7 @@ app.post('/order/:id', (req, res) => {
                         var list = history.history;
                         list.push(req.body);
                         ordersCollection.updateOne(
+                            // { name: 'req.params.id' },
                             { name: req.params.id },
                             { $set: { history: list }}
                         ).then((r) => {
@@ -208,6 +212,7 @@ app.post('/order/:id', (req, res) => {
                     } else {
                         // no history
                         ordersCollection.insertOne({
+                            // name: 'req.params.id',
                             name: req.params.id,
                             history: [ req.body ]
                         }).then((r) => {

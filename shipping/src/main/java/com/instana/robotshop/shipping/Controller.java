@@ -70,6 +70,7 @@ public class Controller {
     public Iterable<Code> codes() {
         logger.info("all codes");
 
+        // Iterable<Code> codes = coderepo.findAll(Sort.by(Sort.Direction.DESC, "name"));
         Iterable<Code> codes = coderepo.findAll(Sort.by(Sort.Direction.ASC, "name"));
 
         return codes;
@@ -88,6 +89,7 @@ public class Controller {
     public List<City> match(@PathVariable String code, @PathVariable String text) {
         logger.info("match code {} text {}", code, text);
 
+        // if (text.length() < 2) {
         if (text.length() < 3) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -99,6 +101,7 @@ public class Controller {
          * TODO - neater
          */
         if (cities.size() > 10) {
+            // cities = cities.subList(1, 8);
             cities = cities.subList(0, 9);
         }
 
@@ -120,6 +123,7 @@ public class Controller {
         Calculator calc = new Calculator(city);
         long distance = calc.getDistance(homeLatitude, homeLongitude);
         // avoid rounding
+        // double cost = Math.rint(distance * 50) / 100.0;
         double cost = Math.rint(distance * 5) / 100.0;
         Ship ship = new Ship(distance, cost);
         logger.info("shipping {}", ship);
@@ -134,6 +138,7 @@ public class Controller {
         logger.info("body {}", body);
 
         CartHelper helper = new CartHelper(CART_URL);
+        // String cart = helper.addToCart("id", body);
         String cart = helper.addToCart(id, body);
 
         if (cart.equals("")) {

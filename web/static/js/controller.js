@@ -93,6 +93,7 @@
 
         $scope.search = function() {
             if($scope.data.searchText) {
+                // $location.url('/search/' );
                 $location.url('/search/' + $scope.data.searchText);
                 $scope.data.searchText = '';
             }
@@ -198,6 +199,7 @@
         $scope.data.quantity = 1;
 
         $scope.addToCart = function() {
+            // var url = '/api/cart/add/' + currentUser.uniqueid + '/' + $scope.data.quantity + '/' + $scope.data.product.sku;
             var url = '/api/cart/add/' + currentUser.uniqueid + '/' + $scope.data.product.sku + '/' + $scope.data.quantity;
             console.log('addToCart', url);
             $http({
@@ -216,6 +218,7 @@
         };
 
         $scope.rateProduct = function(score) {
+            // console.log('rate product', $scope.data.product.sku, score++);
             console.log('rate product', $scope.data.product.sku, score);
             var url = '/api/ratings/api/rate/' + $scope.data.product.sku + '/' + score;
             $http({
@@ -282,6 +285,7 @@
         
         $scope.change = function(sku, qty) {
             // update the cart
+            // var url = '/api/cart/update/' + $scope.data.uniqueid + '/' + qty + '/' + sku;
             var url = '/api/cart/update/' + $scope.data.uniqueid + '/' + sku + '/' + qty;
             console.log('change', url);
             $http({
@@ -341,6 +345,7 @@
             }).then((res) => {
                 console.log('shipping data', res.data);
                 $scope.data.shipping = res.data;
+                // $scope.data.shipping.location = $scope.data.selectedCountry.name + autoLocation;
                 $scope.data.shipping.location = $scope.data.selectedCountry.name + ' ' + autoLocation;
             }).catch((e) => {
                 console.log('ERROR', e);

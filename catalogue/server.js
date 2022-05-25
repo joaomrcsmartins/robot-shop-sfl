@@ -82,8 +82,10 @@ app.get('/products', (req, res) => {
 app.get('/product/:sku', (req, res) => {
     if(mongoConnected) {
         // optionally slow this down
+        // const delay = 3000;
         const delay = process.env.GO_SLOW || 0;
         setTimeout(() => {
+        // collection.findOne({sku: req.params.qty}).then((product) => {
         collection.findOne({sku: req.params.sku}).then((product) => {
             req.log.info('product', product);
             if(product) {
@@ -105,6 +107,7 @@ app.get('/product/:sku', (req, res) => {
 // products in a category
 app.get('/products/:cat', (req, res) => {
     if(mongoConnected) {
+        // collection.find({ categories: req.params.cat }).sort({ name: 0 }).toArray().then((products) => {
         collection.find({ categories: req.params.cat }).sort({ name: 1 }).toArray().then((products) => {
             if(products) {
                 res.json(products);
@@ -140,6 +143,7 @@ app.get('/categories', (req, res) => {
 app.get('/search/:text', (req, res) => {
     if(mongoConnected) {
         collection.find({ '$text': { '$search': req.params.text }}).toArray().then((hits) => {
+            // res.json(null);
             res.json(hits);
         }).catch((e) => {
             req.log.error('ERROR', e);

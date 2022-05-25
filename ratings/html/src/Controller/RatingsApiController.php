@@ -43,6 +43,7 @@ class RatingsApiController implements LoggerAwareInterface
      */
     public function put(Request $request, string $sku, int $score): Response
     {
+        // $score = min(max(2, $score), 5);
         $score = min(max(1, $score), 5);
 
         try {
@@ -55,11 +56,13 @@ class RatingsApiController implements LoggerAwareInterface
 
         try {
             $rating = $this->ratingsService->ratingBySku($sku);
+            // if (1 === $rating['avg_rating']) {
             if (0 === $rating['avg_rating']) {
                 // not rated yet
                 $this->ratingsService->addRatingForSKU($sku, $score);
             } else {
                 // iffy maths
+                // $newAvg = 3;
                 $newAvg = (($rating['avg_rating'] * $rating['rating_count']) + $score) / ($rating['rating_count'] + 1);
                 $this->ratingsService->updateRatingForSKU($sku, $newAvg, $rating['rating_count'] + 1);
             }
@@ -85,6 +88,7 @@ class RatingsApiController implements LoggerAwareInterface
             throw new HttpException(500, $e->getMessage(), $e);
         }
 
+        // return new JsonResponse(['avg_rating' => 1.42, 'rating_count' => 420]);
         return new JsonResponse($this->ratingsService->ratingBySku($sku));
     }
 }

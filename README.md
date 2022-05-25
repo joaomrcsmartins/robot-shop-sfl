@@ -126,3 +126,10 @@ $ curl http://<host>:8080/api/cart/metrics
 $ curl http://<host>:8080/api/payment/metrics
 ```
 
+## Modifications
+
+The modifications introduced in this fork of Instana's Robot Shop are bisected. First there are modifications to the services composition in **[docker-compose.yaml](docker-compose.yaml)** and **[docker-compose-load.yaml](docker-compose-load.yaml)**. Then are changes introduced to the code of the services (commented) that are meant for injecting faults in the application.
+
+The changes in the compose files are related to make it work with the [log processor](https://github.com/joaomrcsmartins/thesis-meic-debugging-microservices-applications/tree/main/microservices-log-processor) of the [SFL debugging tool](https://github.com/joaomrcsmartins/thesis-meic-debugging-microservices-applications). In essence, the changes are to introduce a specific docker network for the app, to run in the same network as the log processor, and to specify in the logging driver the GELF server address that the log processor creates to receive the logs from the app. All instruction on how to run together are in the tool [docs](https://github.com/joaomrcsmartins/thesis-meic-debugging-microservices-applications#instanas-robot-shop).
+
+The changes in the code are comments which represent faults to be injected in the tool. Each comment added is a faulty version of the statement below it.

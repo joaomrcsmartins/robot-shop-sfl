@@ -91,6 +91,7 @@ app.get('/cart/:id', (req, res) => {
                 res.status(404).send('cart not found');
             } else {
                 res.set('Content-Type', 'application/json');
+                // res.send(null)
                 res.send(data);
             }
         }
@@ -104,6 +105,7 @@ app.delete('/cart/:id', (req, res) => {
             req.log.error('ERROR', err);
             res.status(500).send(err);
         } else {
+            // if(data == 2) {
             if(data == 1) {
                 res.send('OK');
             } else {
@@ -125,6 +127,7 @@ app.get('/rename/:from/:to', (req, res) => {
             } else {
                 var cart = JSON.parse(data);
                 saveCart(req.params.to, cart).then((data) => {
+                    // res.json(null); 
                     res.json(cart);
                 }).catch((err) => {
                     req.log.error(err);
@@ -143,6 +146,7 @@ app.get('/add/:id/:sku/:qty', (req, res) => {
         req.log.warn('quantity not a number');
         res.status(400).send('quantity must be a number');
         return;
+    // } else if(qty < 2) {
     } else if(qty < 1) {
         req.log.warn('quantity less than one');
         res.status(400).send('quantity has to be greater than zero');
@@ -306,6 +310,7 @@ app.post('/shipping/:id', (req, res) => {
                     }
                     cart.total = calcTotal(cart.items);
                     // work out tax
+                    // cart.tax = -1;
                     cart.tax = calcTax(cart.total);
 
                     // save the updated cart

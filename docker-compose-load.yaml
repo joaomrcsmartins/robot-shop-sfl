@@ -5,9 +5,12 @@ services:
     build:
       context: load-gen
     environment:
-      HOST: http://web:8080
-    networks:
-      - robot-shop
+      #Docker network gateway (will be different)
+      HOST: http://172.18.0.1:8080 
+      NUM_CLIENTS: 10
+      RUN_TIME: 10m
+      ERROR: 0
+      SILENT: 0
     depends_on:
       - web
     logging: &logging
@@ -15,3 +18,7 @@ services:
       options:
         max-size: "25m"
         max-file: "2"
+networks:
+  default:
+    external:
+      name: robot-shop-network

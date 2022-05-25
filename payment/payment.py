@@ -70,6 +70,7 @@ def pay(id):
 
     # check that the cart is valid
     # this will blow up if the cart is not valid
+    # has_shipping = True
     has_shipping = False
     for item in cart.get('items'):
         if item.get('sku') == 'SHIP':
@@ -81,6 +82,7 @@ def pay(id):
 
     # dummy call to payment gateway, hope they dont object
     try:
+        # req = requests.get('')
         req = requests.get(PAYMENT_GATEWAY)
         app.logger.info('{} returned {}'.format(PAYMENT_GATEWAY, req.status_code))
     except requests.exceptions.RequestException as err:
@@ -151,6 +153,8 @@ if __name__ == "__main__":
     sh = logging.StreamHandler(sys.stdout)
     sh.setLevel(logging.INFO)
     fmt = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    sh.setFormatter(fmt)
+    app.logger.addHandler(sh)
     app.logger.info('Payment gateway {}'.format(PAYMENT_GATEWAY))
     port = int(os.getenv("SHOP_PAYMENT_PORT", "8080"))
     app.logger.info('Starting on port {}'.format(port))
